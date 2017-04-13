@@ -1,24 +1,26 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {HttpModule, JsonpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
-import { HeroFormComponent } from './hero';
+
+import { HeroDetailComponent, HeroListComponent, HeroService } from './hero';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HeroFormComponent
+        HeroDetailComponent,
+        HeroListComponent
     ],
     imports: [
         BrowserModule,
-        FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         JsonpModule,
         // routing
     ],
-    // providers: [appRoutingProviders],
+    providers: [HeroService],
     bootstrap: [AppComponent]
 })
 
