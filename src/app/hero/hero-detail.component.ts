@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Address, Hero, states } from './data-model';
 import { HeroService }           from './hero.service';
-import {forbiddenNameValidator} from "./forbidden-name.directive";
 
 @Component({
     selector: 'hero-detail',
@@ -30,8 +29,7 @@ export class HeroDetailComponent implements OnChanges {
                     Validators.required,
                     Validators.minLength(4),
                     Validators.maxLength(24),
-                    Validators.pattern('[\\w\\-\\s\\/]+'),
-                    forbiddenNameValidator(/angular/i)
+                    Validators.pattern('[\\w\\-\\s\\/]+')
                 ])
             ],
             secretLairs: this.fb.array([]),
@@ -53,8 +51,7 @@ export class HeroDetailComponent implements OnChanges {
             'required':      'Name is required.',
             'minlength':     'Name must be at least 4 characters long.',
             'maxlength':     'Name cannot be more than 24 characters long.',
-            'pattern':     'Incorrect pattern',
-            'forbiddenName': 'Someone named "Angular" cannot be a hero.'
+            'pattern':     'Incorrect pattern'
         },
         'power': {
             'required': 'Power is required.'

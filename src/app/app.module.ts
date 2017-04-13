@@ -5,14 +5,13 @@ import {HttpModule, JsonpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
 
-import { HeroDetailComponent, HeroListComponent, HeroService, ForbiddenValidatorDirective } from './hero';
+import { HeroDetailComponent, HeroListComponent, HeroService } from './hero';
 
 @NgModule({
     declarations: [
         AppComponent,
         HeroDetailComponent,
-        HeroListComponent,
-        ForbiddenValidatorDirective
+        HeroListComponent
     ],
     imports: [
         BrowserModule,
