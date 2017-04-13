@@ -1,8 +1,9 @@
 import { Component, Input, OnChanges }       from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Address, Hero, states } from './data-model';
 import { HeroService }           from './hero.service';
+import {forbiddenNameValidator} from "./forbidden-name.directive";
 
 @Component({
     selector: 'hero-detail',
@@ -25,11 +26,55 @@ export class HeroDetailComponent implements OnChanges {
 
     createForm() {
         this.heroForm = this.fb.group({
-            name: '',
+            name: ['', Validators.compose([
+                    Validators.required,
+                    Validators.minLength(4),
+                    Validators.maxLength(24),
+                    Validators.pattern('[\\w\\-\\s\\/]+'),
+                    forbiddenNameValidator(/angular/i)
+                ])
+            ],
             secretLairs: this.fb.array([]),
             power: '',
             sidekick: ''
         });
+
+        this.heroForm.valueChanges
+            .subscribe(data => this.onValueChanged(data));
+        this.onValueChanged(); // (re)set validation messages now
+    }
+
+    formErrors = {
+        'name': '',
+        'power': ''
+    };
+    validationMessages = {
+        'name': {
+            'required':      'Name is required.',
+            'minlength':     'Name must be at least 4 characters long.',
+            'maxlength':     'Name cannot be more than 24 characters long.',
+            'pattern':     'Incorrect pattern',
+            'forbiddenName': 'Someone named "Angular" cannot be a hero.'
+        },
+        'power': {
+            'required': 'Power is required.'
+        }
+    };
+
+    onValueChanged(data?: any) {
+        if (!this.heroForm) { return; }
+        const form = this.heroForm;
+        for (const field in this.formErrors) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = form.get(field);
+            if (control && control.dirty && !control.valid) {
+                const messages = this.validationMessages[field];
+                for (const key in control.errors) {
+                    this.formErrors[field] += messages[key] + ' ';
+                }
+            }
+        }
     }
 
     ngOnChanges() {
